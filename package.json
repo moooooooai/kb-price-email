@@ -1,0 +1,23 @@
+{
+  "name": "kb-price-email",
+  "version": "1.0.0",
+  "description": "KB부동산 주간 시세 리포트 이메일 발송",
+  "type": "module",
+  "scripts": {
+    "send": "tsx send.ts",
+    "preview": "tsx send.ts --dry",
+    "report": "tsx report.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^8.0.11",
+    "puppeteer": "^25.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "@types/nodemailer": "^6.4.17",
+    "tsx": "^4.20.3",
+    "typescript": "^5.7.3"
+  }
+}

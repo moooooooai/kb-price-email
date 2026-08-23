@@ -1,0 +1,5 @@
+node_modules/
+email.html
+public/
+*.png
+.DS_Store
