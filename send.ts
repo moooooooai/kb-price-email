@@ -8,62 +8,69 @@ const CARD_W = 480; // 카드 논리 폭(px). 이미지는 2x로 렌더해 선�
 const OVER_15 = 150000; // KB시세 15억(만원) 초과 강조 임계값
 
 // ───────── 타깃: 단지번호 + 평형(공급평,내림) 또는 전용㎡ + 타입(선택) ─────────
-// 1순위/2순위를 대분류로, 그 안에서 구별(자치구 평당가 순위 순)로 분리
-interface Section { 대분류: string; 구: string; rows: Row[] }
-const GROUPS: { 대분류: string; 구: string; targets: Target[] }[] = [
-  // ───── 1순위 ─────
-  { 대분류: '1순위', 구: '서울 강남구', targets: [
+// 구별로 묶어 표시 (순위 구분 없음). 같은 구는 하나로 병합.
+interface Section { 구: string; rows: Row[]; head?: string }
+const GROUPS: { 구: string; targets: Target[] }[] = [
+  { 구: '서울 강남구', targets: [
     { danjiId: '118', 평: 14 },                    // 까치마을 14평 (수서동)
     { danjiId: '117', 평: 14 },                    // 수서신동아 14평 (수서동)
     { danjiId: '128', 평: 14 },                    // 대치 14평 (개포동)
   ] },
-  { 대분류: '1순위', 구: '서울 송파구', targets: [
+  { 구: '서울 송파구', targets: [
     { danjiId: '15524', 평: 12, 타입: 'A' },       // 리센츠 12A (잠실동)
     { danjiId: '15616', 전용: 35 },                // 파크리오 전용35 (잠실동)
   ] },
-  { 대분류: '1순위', 구: '서울 마포구', targets: [
+  { 구: '서울 마포구', targets: [
     { danjiId: '549997', 평: 17, 타입: 'A' },      // 마포더클래시 17평 A (아현동)
     { danjiId: '549997', 평: 17, 타입: 'B' },      // 마포더클래시 17평 B
+    { danjiId: '1345', 전용: 54, 타입: 'A', 표시명: '마포현대' }, // 마포현대 21평A (전용54, 도화동)
+    { danjiId: '1345', 전용: 59, 타입: 'B', 표시명: '마포현대' }, // 마포현대 21평B (전용59)
+    { danjiId: '1345', 전용: 59, 타입: 'A', 표시명: '마포현대' }, // 마포현대 23평A (전용59)
   ] },
-  { 대분류: '1순위', 구: '서울 동작구', targets: [
+  { 구: '서울 동작구', targets: [
     { danjiId: '1306', 전용: 59 },                 // 신동아리버파크 전용59 (노량진동)
     { danjiId: '1304', 전용: 59 },                 // 노량진우성 전용59 (노량진동)
     { danjiId: '1309', 전용: 59 },                 // 본동신동아 전용59 (본동)
   ] },
-  { 대분류: '1순위', 구: '경기 성남 분당구', targets: [
+  { 구: '경기 성남 분당구', targets: [
     { danjiId: '4611', 평: 20 },                   // 이매촌 한신 20평 (이매동)
   ] },
-  // ───── 2순위 ─────
-  { 대분류: '2순위', 구: '서울 송파구', targets: [
+  { 구: '서울 송파구', targets: [
     { danjiId: '1914', 전용: 45 },                 // 오금상아2차 전용45 (19평, 오금동)
   ] },
-  { 대분류: '2순위', 구: '서울 강남구', targets: [
+  { 구: '서울 강남구', targets: [
     { danjiId: '429058', 전용: 59 },               // 강남자곡힐스테이트 전용59 (25평 A, 자곡동)
     { danjiId: '429058', 전용: 51, 타입: 'A' },    // 강남자곡힐스테이트 전용51 A (22평)
     { danjiId: '429058', 전용: 51, 타입: 'B' },    // 강남자곡힐스테이트 전용51 B (22평)
   ] },
-  { 대분류: '2순위', 구: '서울 성동구', targets: [
+  { 구: '서울 성동구', targets: [
     { danjiId: '31234', 전용: 51, 타입: 'A' },     // 왕십리자이 전용51 A (22평, 하왕십리동)
     { danjiId: '31234', 전용: 51, 타입: 'B' },     // 왕십리자이 전용51 B (22평)
     { danjiId: '13025', 전용: 59 },                // 왕십리풍림아이원 전용59 (22평, 하왕십리동)
     { danjiId: '1773', 전용: 59 },                 // 극동그린 전용59 (25평, 옥수동)
+    { danjiId: '1764', 전용: 59, 표시명: '응봉대림2차' }, // 응봉대림2차 전용59 (응봉동)
+    { danjiId: '1743', 전용: 71, 표시명: '청계벽산' }, // 청계벽산 전용71 (홍익동)
   ] },
-  { 대분류: '2순위', 구: '서울 동작구', targets: [
+  { 구: '서울 동작구', targets: [
     { danjiId: '1319', 평: 20, 표시명: '사당극동' }, // KB명 '극동' → 카드엔 사당극동 (사당동)
     { danjiId: '35389', 전용: 49 },                // 사당롯데캐슬골든포레 전용49 (사당동)
   ] },
-  { 대분류: '2순위', 구: '서울 영등포구', targets: [
+  { 구: '서울 영등포구', targets: [
     { danjiId: '2192', 전용: 59 },                 // 영등포삼환 전용59 (26평, 영등포동)
     { danjiId: '2196', 전용: 59 },                 // 영등포푸르지오 전용59 (25평, 영등포동)
     { danjiId: '2284', 전용: 59 },                 // 양평한신 전용59 (양평동)
   ] },
-  { 대분류: '2순위', 구: '서울 중구', targets: [
+  { 구: '서울 중구', targets: [
     { danjiId: '2539', 전용: 57 },                 // 약수하이츠 전용57 (24평, 신당동)
     { danjiId: '2540', 전용: 59, 타입: 'A' },      // 신당동삼성 전용59 A (24평)
     { danjiId: '2540', 전용: 59, 타입: 'B' },      // 신당동삼성 전용59 B (24평)
     { danjiId: '2540', 전용: 59, 타입: 'C' },      // 신당동삼성 전용59 C (24평)
   ] },
-  { 대분류: '2순위', 구: '경기 성남 분당구', targets: [
+  { 구: '서울 강동구', targets: [
+    { danjiId: '12822', 전용: 59 },                // 강동현대홈타운 전용59 (명일동)
+    { danjiId: '21899', 전용: 59 },                // 둔촌푸르지오 전용59 (둔촌동)
+  ] },
+  { 구: '경기 성남 분당구', targets: [
     { danjiId: '22183', 전용: 51 },                // 산운마을11단지 전용51 (운중동)
   ] },
 ];
@@ -118,16 +125,15 @@ const cardInner = (r: Row): string => {
 // ── 메일/렌더 공통 블록: 타이틀·대분류·구 라벨·카드를 모두 이미지(.shot)로 찍는다 ──
 type Block =
   | { kind: 'title' }
-  | { kind: 'head'; text: string }   // 대분류 (15억 초과 / 1순위 / 2순위)
+  | { kind: 'head'; text: string }   // 15억 초과 섹션 라벨
   | { kind: 'sub'; text: string }    // 구
   | { kind: 'card'; row: Row };
 
-// 섹션 목록 → 렌더/메일 공통 블록 순서 (타이틀 → 대분류 → 구 → 카드들)
+// 섹션 목록 → 렌더/메일 공통 블록 순서 (타이틀 → [head] → 구 → 카드들)
 function buildBlocks(sections: Section[]): Block[] {
   const blocks: Block[] = [{ kind: 'title' }];
-  let 현재대분류 = '';
   for (const s of sections) {
-    if (s.대분류 !== 현재대분류) { blocks.push({ kind: 'head', text: s.대분류 }); 현재대분류 = s.대분류; }
+    if (s.head) blocks.push({ kind: 'head', text: s.head });
     if (s.구) blocks.push({ kind: 'sub', text: s.구 });
     for (const r of s.rows) blocks.push({ kind: 'card', row: r });
   }
@@ -224,16 +230,17 @@ function buildEmail(
 }
 
 // ───────── 실행 ─────────
-const sections: Section[] = [];
+// 같은 구는 하나로 병합(순위 없음). Map이 첫 등장 순서 유지.
+const byGu = new Map<string, Row[]>();
 for (const g of GROUPS) {
-  const rows: Row[] = [];
   for (const t of g.targets) {
     const r = await fetchRow(t);
     r.네이버링크 = naverLink(t.danjiId, r.danjiName); // 실거래는 fetchRow가 KB에서 채움
-    rows.push(r);
+    if (!byGu.has(g.구)) byGu.set(g.구, []);
+    byGu.get(g.구)!.push(r);
   }
-  sections.push({ 대분류: g.대분류, 구: g.구, rows });
 }
+const sections: Section[] = [...byGu].map(([구, rows]) => ({ 구, rows }));
 
 // KB시세 15억 초과 단지는 맨 앞 별도 대분류로 이동(중복 표시 없음). 카드 자체도 빨간 배경.
 const over: Row[] = [];
@@ -246,13 +253,13 @@ for (const s of sections) {
   s.rows = keep;
 }
 const ordered = sections.filter((s) => s.rows.length > 0);
-if (over.length) ordered.unshift({ 대분류: 'KB 시세 15억 초과 단지', 구: '', rows: over });
+if (over.length) ordered.unshift({ 구: '', rows: over, head: 'KB 시세 15억 초과 단지' });
 sections.length = 0;
 sections.push(...ordered);
 
 const baseDate = sections.flatMap((s) => s.rows).find((r) => r.기준일)?.기준일;
 for (const s of sections) {
-  console.log(`[${s.대분류}${s.구 ? ' · ' + s.구 : ''}]`);
+  console.log(`[${s.head ?? s.구}]`);
   s.rows.forEach((r) => console.log(' -', r.danjiName, r.평 + '평', r.error || `매매 ${won(r.매매)}(${r.매매증감})`, r.실거래 ? `| 실거래 ${r.실거래}` : ''));
 }
 

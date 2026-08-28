@@ -40,6 +40,11 @@ export const NAVER: Record<string, NaverInfo> = {
   '33946':  { 동: '명일동', complexNo: 113432 },                // 래미안솔베뉴 (전용49 A/B/C) — 평형 딥링크는 네이버 평형번호 확인 필요
   '1319':   { 동: '사당동', complexNo: 374 },                   // 사당극동(KB명 극동) (20평) — 평형 딥링크는 네이버 평형번호 확인 필요
   '35389':  { 동: '사당동', complexNo: 115936, 평형: 2, 평형목록: '1-2-3-4-5' }, // 사당롯데캐슬골든포레 (전용49)
+  '12822':  { 동: '명일동', complexNo: 9682, url: 'https://fin.land.naver.com/complexes/9682?tab=article&articlePyeongTypeNumbers=1&articleTradeTypes=A1-B1&transactionPyeongTypeNumber=2&transactionTradeType=A1&articleSortingType=PRICE_ASC' }, // 강동현대홈타운 (전용59)
+  '1764':   { 동: '응봉동', complexNo: 571, url: 'https://fin.land.naver.com/complexes/571?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 응봉대림2차 (전용59)
+  '1743':   { 동: '홍익동', complexNo: 573, url: 'https://fin.land.naver.com/complexes/573?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=2' }, // 청계벽산 (전용71)
+  '1345':   { 동: '도화동', complexNo: 3290, url: 'https://fin.land.naver.com/complexes/3290?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1-5-7' }, // 마포현대 (전용54·59A·59B)
+  '21899':  { 동: '둔촌동', complexNo: 27212, url: 'https://fin.land.naver.com/complexes/27212?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 둔촌푸르지오 (전용59)
 };
 
 /** 단지 클릭 링크: 평형 딥링크 > 단지페이지 > 검색결과 순으로 폴백 */
