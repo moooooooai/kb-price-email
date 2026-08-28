@@ -2,7 +2,11 @@ name: KB 주간 시세 리포트
 
 on:
   schedule:
-    - cron: '0 4 * * 5'   # 매주 금 04:00 UTC = 13:00 KST
+    # GitHub cron은 정각(:00)에 잘 드롭되므로 오프피크 분(:07) + 금요일 여러 번 백업.
+    # 하나가 드롭돼도 다음 슬롯이 커버. 같은 주 중복 발송은 아래 dedup 가드로 방지.
+    - cron: '7 4 * * 5'    # 금 04:07 UTC = 13:07 KST (기본)
+    - cron: '7 8 * * 5'    # 금 08:07 UTC = 17:07 KST (백업1)
+    - cron: '7 12 * * 5'   # 금 12:07 UTC = 21:07 KST (백업2)
   workflow_dispatch:
     inputs:
       dry:
@@ -11,7 +15,7 @@ on:
         default: false
 
 permissions:
-  contents: write   # keepalive 빈 커밋 push용
+  contents: write   # dedup 마커/keepalive 커밋 push용
   pages: write      # GitHub Pages 배포용
   id-token: write   # Pages 배포 OIDC
 
@@ -23,44 +27,60 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
+      - name: 이번 주 발송 여부 확인 (중복방지 가드)
+        id: dedup
+        run: |
+          WEEK=$(date -u +%G-%V)   # ISO 주차, 예: 2026-35
+          echo "week=$WEEK" >> "$GITHUB_OUTPUT"
+          LAST=$(cat .github/last-sent.txt 2>/dev/null || echo "")
+          echo "이번 주=$WEEK · 마지막 발송=$LAST · 이벤트=${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$LAST" = "$WEEK" ]; then
+            echo "이미 이번 주($WEEK) 발송됨 → 스킵"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v6
+        if: steps.dedup.outputs.skip != 'true'
         with:
           node-version: '22'
       - run: npm ci
+        if: steps.dedup.outputs.skip != 'true'
       - name: Install Korean fonts (Chromium 렌더용)
+        if: steps.dedup.outputs.skip != 'true'
         run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
       - name: Send report
+        if: steps.dedup.outputs.skip != 'true'
         run: npm run ${{ inputs.dry && 'preview' || 'send' }}
         env:
           NAVER_USER: ${{ secrets.NAVER_USER }}
           NAVER_PASS: ${{ secrets.NAVER_PASS }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
       - name: Upload preview (dry only)
-        if: ${{ inputs.dry }}
+        if: ${{ inputs.dry && steps.dedup.outputs.skip != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: email-preview
           path: email.html
       - name: Setup Pages
+        if: steps.dedup.outputs.skip != 'true'
         uses: actions/configure-pages@v5
       - name: Upload Pages artifact (public/index.html)
+        if: steps.dedup.outputs.skip != 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
       - name: Deploy to GitHub Pages
         id: deployment
+        if: steps.dedup.outputs.skip != 'true'
         uses: actions/deploy-pages@v4
-      - name: Keepalive (60일 무커밋 자동 비활성화 방지)
-        if: always()   # 발송 실패해도 실행
+      - name: 발송 주차 기록 (중복방지 마커 + 리포 활성 유지)
+        if: ${{ steps.dedup.outputs.skip != 'true' && !inputs.dry }}
         run: |
-          AGE_DAYS=$(( ( $(date +%s) - $(git log -1 --format=%ct) ) / 86400 ))
-          echo "마지막 커밋 경과: ${AGE_DAYS}일"
-          if [ "$AGE_DAYS" -ge 50 ]; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit --allow-empty -m "chore: keepalive (예약 워크플로 60일 비활성화 방지)"
-            git push
-            echo "keepalive 커밋 push 완료"
-          else
-            echo "최근 커밋 있음 → keepalive 불필요"
-          fi
+          echo "${{ steps.dedup.outputs.week }}" > .github/last-sent.txt
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/last-sent.txt
+          git commit -m "chore: ${{ steps.dedup.outputs.week }} 주간 리포트 발송 기록" || { echo "변경 없음"; exit 0; }
+          git pull --rebase --autostash origin main
+          git push
