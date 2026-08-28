@@ -44,6 +44,10 @@ export const NAVER: Record<string, NaverInfo> = {
   '1764':   { 동: '응봉동', complexNo: 571, url: 'https://fin.land.naver.com/complexes/571?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 응봉대림2차 (전용59)
   '1743':   { 동: '홍익동', complexNo: 573, url: 'https://fin.land.naver.com/complexes/573?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=2' }, // 청계벽산 (전용71)
   '1345':   { 동: '도화동', complexNo: 3290, url: 'https://fin.land.naver.com/complexes/3290?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1-5-7' }, // 마포현대 (전용54·59A·59B)
+  '1355':   { 동: '도화동', complexNo: 841, url: 'https://fin.land.naver.com/complexes/841?isVilla=false&tab=article&articleTradeTypes=A1&articlePyeongTypeNumbers=2&articleSortingType=PRICE_ASC' }, // 도화현대홈타운 (전용59)
+  '1361':   { 동: '용강동', complexNo: 1148, url: 'https://fin.land.naver.com/complexes/1148?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1' }, // 마포쌍용황금 (전용59)
+  '1370':   { 동: '염리동', complexNo: 844, url: 'https://fin.land.naver.com/complexes/844?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=4-3' }, // 염리상록 (전용57B·58A)
+  '1352':   { 동: '도화동', complexNo: 407, url: 'https://fin.land.naver.com/complexes/407?articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1' }, // 도화현대1차 (전용54)
   '21899':  { 동: '둔촌동', complexNo: 27212, url: 'https://fin.land.naver.com/complexes/27212?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 둔촌푸르지오 (전용59)
 };
 
