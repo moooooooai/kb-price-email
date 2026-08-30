@@ -20,7 +20,7 @@ export interface Row {
   전세증감: number;
   error?: string;
   실거래?: string;   // 네이버 최근 실거래가 (send 시점 주입)
-  네이버링크?: string;
+  급매링크?: string;
 }
 
 interface TypInfoArea {

@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import fs from 'node:fs';
 import puppeteer from 'puppeteer';
 import { type Target, type Row, fetchRow, won, fmtDate } from './kb.ts';
-import { naverLink } from './naver.ts';
+import { geummaecatchLink } from './naver.ts';
 
 const CARD_W = 480; // 카드 논리 폭(px). 이미지는 2x로 렌더해 선명하게.
 const OVER_15 = 150000; // KB시세 15억(만원) 초과 강조 임계값
@@ -18,7 +18,6 @@ const GROUPS: { 구: string; targets: Target[] }[] = [
   ] },
   { 구: '서울 송파구', targets: [
     { danjiId: '15524', 평: 12, 타입: 'A' },       // 리센츠 12A (잠실동)
-    { danjiId: '15616', 전용: 35 },                // 파크리오 전용35 (잠실동)
   ] },
   { 구: '서울 마포구', targets: [
     { danjiId: '549997', 평: 17, 타입: 'A' },      // 마포더클래시 17평 A (아현동)
@@ -28,8 +27,6 @@ const GROUPS: { 구: string; targets: Target[] }[] = [
     { danjiId: '1345', 전용: 59, 타입: 'A', 표시명: '마포현대' }, // 마포현대 23평A (전용59)
     { danjiId: '1355', 전용: 59, 표시명: '도화현대홈타운' }, // 도화현대홈타운 전용59 (도화동, KB명 현대홈타운2차)
     { danjiId: '1361', 전용: 59 },                 // 마포쌍용황금 전용59 (용강동)
-    { danjiId: '1370', 전용: 57, 타입: 'B', 표시명: '염리상록' }, // 염리상록 24평B (전용57, 염리동)
-    { danjiId: '1370', 전용: 58, 타입: 'A', 표시명: '염리상록' }, // 염리상록 25평A (전용58)
     { danjiId: '1352', 전용: 54, 표시명: '도화현대1차' }, // 도화현대1차 전용54 (도화동, KB명 도화동현대1차)
   ] },
   { 구: '서울 동작구', targets: [
@@ -49,16 +46,11 @@ const GROUPS: { 구: string; targets: Target[] }[] = [
     { danjiId: '429058', 전용: 51, 타입: 'B' },    // 강남자곡힐스테이트 전용51 B (22평)
   ] },
   { 구: '서울 성동구', targets: [
-    { danjiId: '31234', 전용: 51, 타입: 'A' },     // 왕십리자이 전용51 A (22평, 하왕십리동)
-    { danjiId: '31234', 전용: 51, 타입: 'B' },     // 왕십리자이 전용51 B (22평)
-    { danjiId: '13025', 전용: 59 },                // 왕십리풍림아이원 전용59 (22평, 하왕십리동)
-    { danjiId: '1773', 전용: 59 },                 // 극동그린 전용59 (25평, 옥수동)
     { danjiId: '1764', 전용: 59, 표시명: '응봉대림2차' }, // 응봉대림2차 전용59 (응봉동)
     { danjiId: '1743', 전용: 71, 표시명: '청계벽산' }, // 청계벽산 전용71 (홍익동)
   ] },
   { 구: '서울 동작구', targets: [
     { danjiId: '1319', 평: 20, 표시명: '사당극동' }, // KB명 '극동' → 카드엔 사당극동 (사당동)
-    { danjiId: '35389', 전용: 49 },                // 사당롯데캐슬골든포레 전용49 (사당동)
   ] },
   { 구: '서울 영등포구', targets: [
     { danjiId: '2192', 전용: 59 },                 // 영등포삼환 전용59 (26평, 영등포동)
@@ -92,7 +84,7 @@ const deltaBadge = (v: number): string => {
   return `<span style="display:inline-block;background-color:${bg};color:${fg};font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px">${up ? '▲' : '▼'} ${won(Math.abs(v))}</span>`;
 };
 
-// 카드 1장 내부 마크업 — 이미지로 렌더된다. 네이버 이동은 메일에서 바깥 <a>가 담당.
+// 카드 1장 내부 마크업 — 이미지로 렌더된다. 급매캐치 이동은 메일에서 바깥 <a>가 담당.
 const cardInner = (r: Row): string => {
   const meta = `${r.평}평${r.타입 ? ' ' + r.타입 : ''}${r.전용 ? ` · 전용 ${r.전용}㎡` : ''}`;
   const body = r.error
@@ -103,8 +95,8 @@ const cardInner = (r: Row): string => {
               <span style="margin-left:8px">${deltaBadge(r.매매증감)}</span>
             </div>
             <div style="margin-top:8px;font-size:12px;color:#5f6368">최근 실거래 · <span style="color:#202124;font-weight:600">${r.실거래 || '–'}</span></div>`;
-  const hint = r.네이버링크
-    ? `<div style="margin-top:14px;font-size:13px;font-weight:700;color:#03c75a">탭하면 네이버 호가 ›</div>`
+  const hint = r.급매링크
+    ? `<div style="margin-top:14px;font-size:13px;font-weight:700;color:#e8590c">탭하면 급매캐치 급매 ›</div>`
     : '';
   // 15억 초과 단지는 빨간 배경 + 빨간 테두리로 강조
   const over = !r.error && (r.매매 ?? 0) > OVER_15;
@@ -213,8 +205,8 @@ function buildEmail(
 ): string {
   const body = blocks.map((b, idx) => {
     const img = `<img src="${srcOf(idx)}" width="${CARD_W}" alt="${blockAlt(b, baseDate)}" style="display:block;width:100%;max-width:${CARD_W}px;height:auto;border:0">`;
-    return b.kind === 'card' && b.row.네이버링크
-      ? `<a href="${b.row.네이버링크}" style="text-decoration:none;display:block">${img}</a>`
+    return b.kind === 'card' && b.row.급매링크
+      ? `<a href="${b.row.급매링크}" style="text-decoration:none;display:block">${img}</a>`
       : img;
   }).join('\n');
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8">
@@ -226,7 +218,7 @@ function buildEmail(
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${CARD_W}px;margin:0 auto">
         <tr><td style="padding:0">
           ${body}
-          <div style="font-size:11px;color:#9aa0a6;padding:14px 6px 0;line-height:1.6">* KB시세=KB 일반거래가(매매 추정), 증감은 직전 주간 대비. 최근 실거래=KB 기준 해당 평형 최근 실거래(금액·층·계약일). 카드를 탭하면 네이버에서 호가를 확인.</div>
+          <div style="font-size:11px;color:#9aa0a6;padding:14px 6px 0;line-height:1.6">* KB시세=KB 일반거래가(매매 추정), 증감은 직전 주간 대비. 최근 실거래=KB 기준 해당 평형 최근 실거래(금액·층·계약일). 카드를 탭하면 급매캐치에서 급매물을 확인.</div>
         </td></tr>
       </table>
     </td></tr>
@@ -240,7 +232,7 @@ const byGu = new Map<string, Row[]>();
 for (const g of GROUPS) {
   for (const t of g.targets) {
     const r = await fetchRow(t);
-    r.네이버링크 = naverLink(t.danjiId, r.danjiName); // 실거래는 fetchRow가 KB에서 채움
+    r.급매링크 = geummaecatchLink(t.danjiId, r.전용 ? Math.floor(Number(r.전용)) : undefined); // band=전용형
     if (!byGu.has(g.구)) byGu.set(g.구, []);
     byGu.get(g.구)!.push(r);
   }

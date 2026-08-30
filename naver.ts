@@ -17,7 +17,6 @@ export const NAVER: Record<string, NaverInfo> = {
   '117':    { 동: '수서동', complexNo: 671, 평형: 1, q: '수서신동아 수서동' }, // 수서신동아 (14평, KB명 "신동아")
   '128':    { 동: '개포동', complexNo: 483, 평형: 1 },          // 대치 (14평)
   '15524':  { 동: '잠실동', complexNo: 22746, 평형: 10, 평형목록: '1' }, // 리센츠 (12평 A)
-  '15616':  { 동: '잠실동', complexNo: 22675, 평형: 8, 평형목록: '1' }, // 파크리오 (전용35)
   '1306':   { 동: '노량진동', complexNo: 3280, 평형: 2 },       // 신동아리버파크 (전용59)
   '1304':   { 동: '노량진동', complexNo: 362, 평형: 1 },         // 노량진우성 (전용59)
   '1309':   { 동: '본동', complexNo: 372, 평형: 4, 평형목록: '2' }, // 본동신동아 (전용59)
@@ -31,41 +30,26 @@ export const NAVER: Record<string, NaverInfo> = {
   '22183':  { 동: '운중동', complexNo: 27863, url: 'https://fin.land.naver.com/complexes/27863?articleTradeTypes=A1&isVilla=false&tab=article&articlePyeongTypeNumbers=3-2-1' }, // 산운마을11단지 (전용51) — 강조번호 없이 3·2·1 평형목록 URL 그대로
   '1914':   { 동: '오금동', complexNo: 628, url: 'https://fin.land.naver.com/complexes/628?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 오금상아2차 (전용45) — 강조번호 없이 URL 그대로
   '429058': { 동: '자곡동', complexNo: 105735, 평형: 2, 평형목록: '2-1-3' }, // 강남자곡힐스테이트 (전용59·51A·51B)
-  '31234':  { 동: '하왕십리동', complexNo: 111002, 평형: 1, 평형목록: '1-2' }, // 왕십리자이 (전용51 A·B)
   '2539':   { 동: '신당동', complexNo: 1238, 평형: 2 },         // 약수하이츠 (전용57)
   '2540':   { 동: '신당동', complexNo: 1237, 평형: 3, 평형목록: '3-4-2' }, // 신당동삼성 (59 A/B/C)
-  '13025':  { 동: '하왕십리동', complexNo: 9168, 평형: 1 },      // 왕십리풍림아이원 (전용59)
-  '1773':   { 동: '옥수동', complexNo: 563, 평형: 2 },          // 극동그린 (전용59)
   '2538':   { 동: '신당동', complexNo: 3833, 평형: 2 },         // 남산타운 (전용59)
-  '33946':  { 동: '명일동', complexNo: 113432 },                // 래미안솔베뉴 (전용49 A/B/C) — 평형 딥링크는 네이버 평형번호 확인 필요
   '1319':   { 동: '사당동', complexNo: 374 },                   // 사당극동(KB명 극동) (20평) — 평형 딥링크는 네이버 평형번호 확인 필요
-  '35389':  { 동: '사당동', complexNo: 115936, 평형: 2, 평형목록: '1-2-3-4-5' }, // 사당롯데캐슬골든포레 (전용49)
   '12822':  { 동: '명일동', complexNo: 9682, url: 'https://fin.land.naver.com/complexes/9682?tab=article&articlePyeongTypeNumbers=1&articleTradeTypes=A1-B1&transactionPyeongTypeNumber=2&transactionTradeType=A1&articleSortingType=PRICE_ASC' }, // 강동현대홈타운 (전용59)
   '1764':   { 동: '응봉동', complexNo: 571, url: 'https://fin.land.naver.com/complexes/571?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 응봉대림2차 (전용59)
   '1743':   { 동: '홍익동', complexNo: 573, url: 'https://fin.land.naver.com/complexes/573?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=2' }, // 청계벽산 (전용71)
   '1345':   { 동: '도화동', complexNo: 3290, url: 'https://fin.land.naver.com/complexes/3290?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1-5-7' }, // 마포현대 (전용54·59A·59B)
   '1355':   { 동: '도화동', complexNo: 841, url: 'https://fin.land.naver.com/complexes/841?isVilla=false&tab=article&articleTradeTypes=A1&articlePyeongTypeNumbers=2&articleSortingType=PRICE_ASC' }, // 도화현대홈타운 (전용59)
   '1361':   { 동: '용강동', complexNo: 1148, url: 'https://fin.land.naver.com/complexes/1148?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1' }, // 마포쌍용황금 (전용59)
-  '1370':   { 동: '염리동', complexNo: 844, url: 'https://fin.land.naver.com/complexes/844?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=4-3' }, // 염리상록 (전용57B·58A)
   '1352':   { 동: '도화동', complexNo: 407, url: 'https://fin.land.naver.com/complexes/407?articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1' }, // 도화현대1차 (전용54)
   '21899':  { 동: '둔촌동', complexNo: 27212, url: 'https://fin.land.naver.com/complexes/27212?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 둔촌푸르지오 (전용59)
 };
 
-/** 단지 클릭 링크: 평형 딥링크 > 단지페이지 > 검색결과 순으로 폴백 */
-export function naverLink(danjiId: string, danjiName: string): string | undefined {
+/** 급매캐치 단지·평형(전용형) 딥링크. 네이버 complexNo를 그대로 사용(band=전용형). */
+export function geummaecatchLink(danjiId: string, band?: number): string | undefined {
   const info = NAVER[danjiId];
-  if (!info) return undefined;
-  if (info.url) return info.url;                 // 완성된 URL이 지정된 경우 그대로 사용
-  if (info.complexNo && info.평형 != null) {
-    const p = new URLSearchParams({
-      tab: 'article',
-      articleTradeTypes: 'A1',
-      transactionTradeType: 'A1',
-      transactionPyeongTypeNumber: String(info.평형),
-      articlePyeongTypeNumbers: info.평형목록 ?? String(info.평형),
-    });
-    return `https://fin.land.naver.com/complexes/${info.complexNo}?${p}`;
-  }
-  if (info.complexNo) return `https://fin.land.naver.com/complexes/${info.complexNo}`;
-  return `https://m.land.naver.com/search/result/${encodeURIComponent(info.q ?? `${danjiName} ${info.동}`)}`;
+  if (!info?.complexNo) return undefined;
+  const base = `https://www.geummaecatch.com/complex/${info.complexNo}`;
+  return band != null
+    ? `${base}/dong/__all__?band=${encodeURIComponent(band + '형')}`
+    : base;
 }
