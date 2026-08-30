@@ -43,6 +43,7 @@ export const NAVER: Record<string, NaverInfo> = {
   '1361':   { 동: '용강동', complexNo: 1148, url: 'https://fin.land.naver.com/complexes/1148?articleSortingType=PRICE_ASC&articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1' }, // 마포쌍용황금 (전용59)
   '1352':   { 동: '도화동', complexNo: 407, url: 'https://fin.land.naver.com/complexes/407?articleTradeTypes=A1&tab=article&articlePyeongTypeNumbers=1' }, // 도화현대1차 (전용54)
   '21899':  { 동: '둔촌동', complexNo: 27212, url: 'https://fin.land.naver.com/complexes/27212?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 둔촌푸르지오 (전용59)
+  '808':    { 동: '신도림동', complexNo: 3210 },                // 신도림동아3차 (전용60)
 };
 
 /** 급매캐치 단지·평형(전용형) 딥링크. 네이버 complexNo를 그대로 사용(band=전용형). */

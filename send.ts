@@ -77,6 +77,9 @@ const GROUPS: { 구: string; targets: Target[] }[] = [
   { 구: '경기 성남 분당구', targets: [
     { danjiId: '22183', 전용: 51 },                // 산운마을11단지 전용51 (운중동)
   ] },
+  { 구: '서울 구로구', targets: [
+    { danjiId: '808', 전용: 60, 표시명: '신도림동아3차' }, // 신도림동아3차 24평(전용60, 신도림동)
+  ] },
 ];
 // 수신자는 코드에 하드코딩하지 않고 env(MAIL_TO, 콤마 구분)에서 주입 — public repo 개인정보 노출 방지
 const RECIPIENTS = (process.env.MAIL_TO ?? '').split(',').map((s) => s.trim()).filter(Boolean);
