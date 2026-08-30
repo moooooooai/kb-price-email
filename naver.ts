@@ -33,6 +33,7 @@ export const NAVER: Record<string, NaverInfo> = {
   '2539':   { 동: '신당동', complexNo: 1238, 평형: 2 },         // 약수하이츠 (전용57)
   '2540':   { 동: '신당동', complexNo: 1237, 평형: 3, 평형목록: '3-4-2' }, // 신당동삼성 (59 A/B/C)
   '2538':   { 동: '신당동', complexNo: 3833, 평형: 2 },         // 남산타운 (전용59)
+  '33946':  { 동: '명일동', complexNo: 113432 },                // 래미안솔베뉴 (전용49 A/B/C)
   '1319':   { 동: '사당동', complexNo: 374 },                   // 사당극동(KB명 극동) (20평) — 평형 딥링크는 네이버 평형번호 확인 필요
   '12822':  { 동: '명일동', complexNo: 9682, url: 'https://fin.land.naver.com/complexes/9682?tab=article&articlePyeongTypeNumbers=1&articleTradeTypes=A1-B1&transactionPyeongTypeNumber=2&transactionTradeType=A1&articleSortingType=PRICE_ASC' }, // 강동현대홈타운 (전용59)
   '1764':   { 동: '응봉동', complexNo: 571, url: 'https://fin.land.naver.com/complexes/571?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 응봉대림2차 (전용59)
