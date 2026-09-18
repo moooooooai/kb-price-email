@@ -29,7 +29,6 @@ export const NAVER: Record<string, NaverInfo> = {
   '2284':   { 동: '양평동', complexNo: 735, 평형: 1 },           // 양평한신 (전용59)
   '22183':  { 동: '운중동', complexNo: 27863, url: 'https://fin.land.naver.com/complexes/27863?articleTradeTypes=A1&isVilla=false&tab=article&articlePyeongTypeNumbers=3-2-1' }, // 산운마을11단지 (전용51) — 강조번호 없이 3·2·1 평형목록 URL 그대로
   '1914':   { 동: '오금동', complexNo: 628, url: 'https://fin.land.naver.com/complexes/628?articlePyeongTypeNumbers=1&articleTradeTypes=A1&tab=article&articleSortingType=PRICE_ASC' }, // 오금상아2차 (전용45) — 강조번호 없이 URL 그대로
-  '429058': { 동: '자곡동', complexNo: 105735, 평형: 2, 평형목록: '2-1-3' }, // 강남자곡힐스테이트 (전용59·51A·51B)
   '2539':   { 동: '신당동', complexNo: 1238, 평형: 2 },         // 약수하이츠 (전용57)
   '2540':   { 동: '신당동', complexNo: 1237, 평형: 3, 평형목록: '3-4-2' }, // 신당동삼성 (59 A/B/C)
   '2538':   { 동: '신당동', complexNo: 3833, 평형: 2 },         // 남산타운 (전용59)
